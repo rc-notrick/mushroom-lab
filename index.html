@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Mushroom Lab</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<style>
+body { font-family: system-ui, sans-serif; margin: 2rem; background: #111; color: #eee; }
+h1 { font-weight: 500; }
+.cards { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.card { background: #1c1c1c; padding: 1rem 1.5rem; border-radius: 8px; }
+.label { font-size: 0.8rem; color: #999; }
+.value { font-size: 1.6rem; }
+canvas { background: #1c1c1c; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; }
+.updated { color: #777; font-size: 0.8rem; }
+</style>
+</head>
+<body>
+<h1>Mushroom Lab</h1>
+<div class="cards">
+  <div class="card"><div class="label">CO2</div><div class="value">412.0 ppm</div></div>
+  <div class="card"><div class="label">Temperature</div><div class="value">21.07 &deg;C</div></div>
+  <div class="card"><div class="label">Humidity</div><div class="value">82.8 %</div></div>
+</div>
+<canvas id="co2"></canvas>
+<canvas id="temp"></canvas>
+<canvas id="rh"></canvas>
+<p class="updated">Updated 13 Sep 2026, 19:53</p>
+<script>
+const data = {'co2': [['2026-09-13T17:40:00+00:00', 595.35], ['2026-09-13T17:50:00+00:00', 844.25], ['2026-09-13T18:00:00+00:00', 697.65], ['2026-09-13T18:10:00+00:00', 1139.7], ['2026-09-13T18:20:00+00:00', 688.45], ['2026-09-13T18:30:00+00:00', 646.35], ['2026-09-13T18:40:00+00:00', 559.35], ['2026-09-13T18:50:00+00:00', 388.7], ['2026-09-13T18:53:08.010216+00:00', 412.0]], 'temp': [['2026-09-13T17:40:00+00:00', 20.88], ['2026-09-13T17:50:00+00:00', 21.19], ['2026-09-13T18:00:00+00:00', 21.05], ['2026-09-13T18:10:00+00:00', 21.72], ['2026-09-13T18:20:00+00:00', 21.12], ['2026-09-13T18:30:00+00:00', 21.08], ['2026-09-13T18:40:00+00:00', 21.12], ['2026-09-13T18:50:00+00:00', 21.09], ['2026-09-13T18:53:08.010216+00:00', 21.07]], 'rh': [['2026-09-13T17:40:00+00:00', 85.03], ['2026-09-13T17:50:00+00:00', 91.22], ['2026-09-13T18:00:00+00:00', 85.94], ['2026-09-13T18:10:00+00:00', 93.0], ['2026-09-13T18:20:00+00:00', 90.59], ['2026-09-13T18:30:00+00:00', 85.72], ['2026-09-13T18:40:00+00:00', 85.36], ['2026-09-13T18:50:00+00:00', 84.33], ['2026-09-13T18:53:08.010216+00:00', 82.8]]};
+function chart(id, label, colour) {
+  new Chart(document.getElementById(id), {
+    type: 'line',
+    data: { datasets: [{
+      label: label,
+      data: data[id].map(p => ({x: p[0], y: p[1]})),
+      borderColor: colour, tension: 0.3, pointRadius: 0
+    }] },
+    options: {
+      scales: { x: { type: 'time', time: { unit: 'hour' }, ticks: { color: '#888' } },
+                 y: { ticks: { color: '#888' } } },
+      plugins: { legend: { labels: { color: '#ccc' } } }
+    }
+  });
+}
+chart('co2', 'CO2 (ppm)', '#7dd3fc');
+chart('temp', 'Temperature (C)', '#fca5a5');
+chart('rh', 'Humidity (%)', '#86efac');
+</script>
+</body>
+</html>
